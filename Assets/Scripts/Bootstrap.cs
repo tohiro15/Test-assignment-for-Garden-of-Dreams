@@ -8,7 +8,7 @@ public class Bootstrap : MonoBehaviour
     private void Awake()
     {
         _gridManager.Init();
-        _buildingManager.SelectBuilding(0); // ¬ыбираем первое здание по умолчанию
+        _buildingManager.SelectBuilding(0);
         Debug.Log("Project initialized!");
     }
 }
