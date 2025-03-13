@@ -2,8 +2,22 @@ using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
 {
+    public static BuildingManager Instance { get; private set; }
+
     [SerializeField] private GameObject[] _buildingPrefabs;
     private GameObject _currentBuilding;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void PlaceBuilding(Vector3 position)
     {

@@ -1,0 +1,130 @@
+{
+    "name": "PlayerInputActions",
+    "maps": [
+        {
+            "name": "BuildingSelection",
+            "id": "b6d6536c-0bed-44f4-9d17-b2d8ee7f0432",
+            "actions": [
+                {
+                    "name": "SelectBuilding1",
+                    "type": "Button",
+                    "id": "c828a157-73f9-407d-8ae9-d130e86ef4eb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectBuilding2",
+                    "type": "Button",
+                    "id": "78b7506f-4048-47a4-8760-68f9b4110478",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectBuilding3",
+                    "type": "Button",
+                    "id": "9df35ef4-54ce-40a8-822b-61cb13c905bf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9eb2200e-e5c4-48d2-92ad-0559a9e0e424",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectBuilding1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "09ef2061-5a93-4714-92e9-94c9cade3bde",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectBuilding2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e5fe9fd-fb7e-46f9-89b2-fe76a626b135",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectBuilding3",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "PlacementMode",
+            "id": "b4e7cb91-66df-43b9-a7b9-4d19680a2ac5",
+            "actions": [
+                {
+                    "name": "PlaceBuilding",
+                    "type": "Button",
+                    "id": "3c28bb40-1612-418c-ad6a-409647abb992",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "dee2c26a-c874-4ef9-b3a9-8755310b1705",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "DeletionMode",
+            "id": "bff5066a-1c4c-421a-a716-b871dfda46db",
+            "actions": [
+                {
+                    "name": "DeleteBuilding",
+                    "type": "Button",
+                    "id": "2c84585b-f7b8-4b8b-83c6-ff321e871180",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a89b29bb-63dc-41a9-888d-0369cd4bacb8",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeleteBuilding",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
