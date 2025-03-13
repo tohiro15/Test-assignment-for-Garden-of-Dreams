@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d438717d786866488ec055408545b7e, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  GridSize: {x: 10, y: 10}
+  GridSize: {x: 1, y: 1}
   BuildingPrefabs:
   - {fileID: 8876690387853285361, guid: 8a0b7aa4f5aa26d43a2554bfc2568f36, type: 3}
   - {fileID: 1821848602896649491, guid: 76667445c647dbc44afcd6723839f20e, type: 3}
-  - {fileID: 8727167812342950632, guid: acde591ed142bed4a8f13ece5d78be63, type: 3}
+  - {fileID: 8876690387853285361, guid: d303a4c52a1d1cb4fadf198654146a30, type: 3}

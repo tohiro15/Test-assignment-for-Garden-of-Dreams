@@ -11,7 +11,6 @@ public class BuildingManager : MonoBehaviour
     private GameObject _currentBuilding;
     private GameObject _buildingPreview;
 
-    // Создаем массив префабов для зданий
     private GameObject[] _buildingPrefabs;
 
     public Vector2Int GridSize => _gameConfig.GridSize;
@@ -30,23 +29,19 @@ public class BuildingManager : MonoBehaviour
         }
 
         _saveManager = FindObjectOfType<SaveManager>();
-
-        // Инициализация GameConfig через Bootstrap
-        if (_gameConfig == null)
-        {
-            Debug.LogError("GameConfig is not assigned!");
-        }
     }
 
     public void Init(GameConfig gameConfig)
     {
-        _gameConfig = gameConfig; // Инициализируем GameConfig
+        _gameConfig = gameConfig;
 
-        // Присваиваем префабы зданий из GameConfig
-        if (_gameConfig != null)
+        if (_gameConfig == null)
         {
-            _buildingPrefabs = _gameConfig.BuildingPrefabs; // Инициализируем префабы
+            Debug.LogError("GameConfig is not assigned!");
+            return;
         }
+
+        _buildingPrefabs = _gameConfig.BuildingPrefabs;
     }
 
     public void SelectBuilding(int index)
@@ -123,7 +118,6 @@ public class BuildingManager : MonoBehaviour
         {
             var building = Instantiate(_currentBuilding, gridPosition, Quaternion.identity);
             _buildings.Add(building);
-            Debug.Log("Building placed at: " + gridPosition);
         }
         else
         {
@@ -133,30 +127,46 @@ public class BuildingManager : MonoBehaviour
 
     private Vector3 SnapToGrid(Vector3 position, Vector2Int buildingSize)
     {
-        float x = Mathf.Floor(position.x / GridSize.x) * GridSize.x + (buildingSize.x * GridSize.x) / 2f;
-        float z = Mathf.Floor(position.z / GridSize.y) * GridSize.y + (buildingSize.y * GridSize.y) / 2f;
-        return new Vector3(x, 0, z);
+        float x = Mathf.Floor(position.x / GridSize.x) * GridSize.x;
+        float z = Mathf.Floor(position.z / GridSize.y) * GridSize.y;
+
+        float offsetX = (buildingSize.x * GridSize.x) / 2f;
+        float offsetZ = (buildingSize.y * GridSize.y) / 2f;
+
+        return new Vector3(x + offsetX, 0, z + offsetZ);
     }
 
     private bool IsAreaFree(Vector3 position, Vector2Int size)
     {
+        Vector3 centerPosition = position;
+
         for (int x = 0; x < size.x; x++)
         {
             for (int z = 0; z < size.y; z++)
             {
                 Vector3 offset = new Vector3(x * GridSize.x, 0, z * GridSize.y);
-                Vector3 checkPosition = position + offset;
+                Vector3 checkPosition = centerPosition + offset;
+
+                bool isOccupied = false;
 
                 foreach (var building in _buildings)
                 {
                     Vector3 buildingPosition = building.transform.position;
                     Vector2Int buildingSize = building.GetComponent<Building>().Size;
 
-                    if (Mathf.Abs(checkPosition.x - buildingPosition.x) < buildingSize.x * GridSize.x &&
-                        Mathf.Abs(checkPosition.z - buildingPosition.z) < buildingSize.y * GridSize.y)
+                    bool isOverlappingX = Mathf.Abs(checkPosition.x - buildingPosition.x) < (buildingSize.x * GridSize.x);
+                    bool isOverlappingZ = Mathf.Abs(checkPosition.z - buildingPosition.z) < (buildingSize.y * GridSize.y);
+
+                    if (isOverlappingX && isOverlappingZ)
                     {
-                        return false;
+                        isOccupied = true;
+                        break;
                     }
+                }
+
+                if (isOccupied)
+                {
+                    return false;
                 }
             }
         }
@@ -176,16 +186,7 @@ public class BuildingManager : MonoBehaviour
             {
                 _buildings.Remove(hit.collider.gameObject);
                 Destroy(hit.collider.gameObject);
-                Debug.Log("Building deleted at: " + position);
             }
-            else
-            {
-                Debug.LogWarning("Building not found or invalid object!");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No building hit!");
         }
     }
 
