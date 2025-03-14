@@ -37,9 +37,18 @@ public class InputHandler : MonoBehaviour
         _input.BuildingSelection.SelectBuilding2.performed += ctx => SelectBuilding(1);
         _input.BuildingSelection.SelectBuilding3.performed += ctx => SelectBuilding(2);
         _input.PlacementMode.PlaceBuilding.performed += ctx => PlaceBuilding();
+        _input.PlacementMode.RotateBuilding.performed += ctx => RotateBuilding();
         _input.DeletionMode.DeleteBuilding.performed += ctx => DeleteBuilding();
 
         _input.Enable();
+    }
+
+    private void RotateBuilding()
+    {
+        if (_isBuildingSelected)
+        {
+            BuildingManager.Instance.RotatePreview(90);
+        }
     }
 
     private void DisableAllModes()
