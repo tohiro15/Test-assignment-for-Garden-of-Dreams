@@ -24,6 +24,34 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     ""name"": ""PlayerInputActions"",
     ""maps"": [
         {
+            ""name"": ""General"",
+            ""id"": ""d1f131f2-8f15-4a99-a159-256f261bee6f"",
+            ""actions"": [
+                {
+                    ""name"": ""Quit"",
+                    ""type"": ""Button"",
+                    ""id"": ""281bcfdf-0349-4ab5-a88a-67241dc46b03"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a963c75d-70a1-4f29-85f2-84486ffc66f9"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Quit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""BuildingSelection"",
             ""id"": ""b6d6536c-0bed-44f4-9d17-b2d8ee7f0432"",
             ""actions"": [
@@ -166,71 +194,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
-        },
-        {
-            ""name"": ""CameraMovement"",
-            ""id"": ""697b56ae-f888-439d-8f42-fdd64d4078d1"",
-            ""actions"": [
-                {
-                    ""name"": ""Move"",
-                    ""type"": ""Button"",
-                    ""id"": ""6d76cbb9-5d9e-4a02-9ef2-20f6940cbfd5"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""aa60ea2b-8ad7-4bfa-9a35-a7aefbcad8bd"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c3495cf2-0042-40e9-af91-87a1d54e6105"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""97701400-d210-44a5-8d19-ccc85e706e6d"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f054651d-74fa-41f2-8152-90a0f8fedae1"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
         }
     ],
     ""controlSchemes"": []
 }");
+        // General
+        m_General = asset.FindActionMap("General", throwIfNotFound: true);
+        m_General_Quit = m_General.FindAction("Quit", throwIfNotFound: true);
         // BuildingSelection
         m_BuildingSelection = asset.FindActionMap("BuildingSelection", throwIfNotFound: true);
         m_BuildingSelection_SelectBuilding1 = m_BuildingSelection.FindAction("SelectBuilding1", throwIfNotFound: true);
@@ -243,9 +213,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // DeletionMode
         m_DeletionMode = asset.FindActionMap("DeletionMode", throwIfNotFound: true);
         m_DeletionMode_DeleteBuilding = m_DeletionMode.FindAction("DeleteBuilding", throwIfNotFound: true);
-        // CameraMovement
-        m_CameraMovement = asset.FindActionMap("CameraMovement", throwIfNotFound: true);
-        m_CameraMovement_Move = m_CameraMovement.FindAction("Move", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -303,6 +270,52 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         return asset.FindBinding(bindingMask, out action);
     }
+
+    // General
+    private readonly InputActionMap m_General;
+    private List<IGeneralActions> m_GeneralActionsCallbackInterfaces = new List<IGeneralActions>();
+    private readonly InputAction m_General_Quit;
+    public struct GeneralActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public GeneralActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Quit => m_Wrapper.m_General_Quit;
+        public InputActionMap Get() { return m_Wrapper.m_General; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GeneralActions set) { return set.Get(); }
+        public void AddCallbacks(IGeneralActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GeneralActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GeneralActionsCallbackInterfaces.Add(instance);
+            @Quit.started += instance.OnQuit;
+            @Quit.performed += instance.OnQuit;
+            @Quit.canceled += instance.OnQuit;
+        }
+
+        private void UnregisterCallbacks(IGeneralActions instance)
+        {
+            @Quit.started -= instance.OnQuit;
+            @Quit.performed -= instance.OnQuit;
+            @Quit.canceled -= instance.OnQuit;
+        }
+
+        public void RemoveCallbacks(IGeneralActions instance)
+        {
+            if (m_Wrapper.m_GeneralActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IGeneralActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GeneralActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GeneralActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public GeneralActions @General => new GeneralActions(this);
 
     // BuildingSelection
     private readonly InputActionMap m_BuildingSelection;
@@ -465,52 +478,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public DeletionModeActions @DeletionMode => new DeletionModeActions(this);
-
-    // CameraMovement
-    private readonly InputActionMap m_CameraMovement;
-    private List<ICameraMovementActions> m_CameraMovementActionsCallbackInterfaces = new List<ICameraMovementActions>();
-    private readonly InputAction m_CameraMovement_Move;
-    public struct CameraMovementActions
+    public interface IGeneralActions
     {
-        private @PlayerInputActions m_Wrapper;
-        public CameraMovementActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_CameraMovement_Move;
-        public InputActionMap Get() { return m_Wrapper.m_CameraMovement; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(CameraMovementActions set) { return set.Get(); }
-        public void AddCallbacks(ICameraMovementActions instance)
-        {
-            if (instance == null || m_Wrapper.m_CameraMovementActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_CameraMovementActionsCallbackInterfaces.Add(instance);
-            @Move.started += instance.OnMove;
-            @Move.performed += instance.OnMove;
-            @Move.canceled += instance.OnMove;
-        }
-
-        private void UnregisterCallbacks(ICameraMovementActions instance)
-        {
-            @Move.started -= instance.OnMove;
-            @Move.performed -= instance.OnMove;
-            @Move.canceled -= instance.OnMove;
-        }
-
-        public void RemoveCallbacks(ICameraMovementActions instance)
-        {
-            if (m_Wrapper.m_CameraMovementActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
-
-        public void SetCallbacks(ICameraMovementActions instance)
-        {
-            foreach (var item in m_Wrapper.m_CameraMovementActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_CameraMovementActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
+        void OnQuit(InputAction.CallbackContext context);
     }
-    public CameraMovementActions @CameraMovement => new CameraMovementActions(this);
     public interface IBuildingSelectionActions
     {
         void OnSelectBuilding1(InputAction.CallbackContext context);
@@ -525,9 +496,5 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IDeletionModeActions
     {
         void OnDeleteBuilding(InputAction.CallbackContext context);
-    }
-    public interface ICameraMovementActions
-    {
-        void OnMove(InputAction.CallbackContext context);
     }
 }

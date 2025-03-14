@@ -39,6 +39,8 @@ public class InputHandler : MonoBehaviour
         _input.PlacementMode.PlaceBuilding.performed += ctx => PlaceBuilding();
         _input.PlacementMode.RotateBuilding.performed += ctx => RotateBuilding();
         _input.DeletionMode.DeleteBuilding.performed += ctx => DeleteBuilding();
+        _input.General.Quit.performed += ctx => QuitGame();
+
 
         _input.Enable();
     }
@@ -169,6 +171,15 @@ public class InputHandler : MonoBehaviour
         _isDeletionMode = false;
         _input.DeletionMode.Disable();
         BuildingManager.Instance.DisablePreview();
+    }
+
+    private void QuitGame()
+    {
+        Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
     private void OnDestroy()
     {

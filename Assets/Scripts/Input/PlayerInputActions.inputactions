@@ -2,6 +2,34 @@
     "name": "PlayerInputActions",
     "maps": [
         {
+            "name": "General",
+            "id": "d1f131f2-8f15-4a99-a159-256f261bee6f",
+            "actions": [
+                {
+                    "name": "Quit",
+                    "type": "Button",
+                    "id": "281bcfdf-0349-4ab5-a88a-67241dc46b03",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a963c75d-70a1-4f29-85f2-84486ffc66f9",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Quit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "BuildingSelection",
             "id": "b6d6536c-0bed-44f4-9d17-b2d8ee7f0432",
             "actions": [
@@ -140,67 +168,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "DeleteBuilding",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "CameraMovement",
-            "id": "697b56ae-f888-439d-8f42-fdd64d4078d1",
-            "actions": [
-                {
-                    "name": "Move",
-                    "type": "Button",
-                    "id": "6d76cbb9-5d9e-4a02-9ef2-20f6940cbfd5",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "aa60ea2b-8ad7-4bfa-9a35-a7aefbcad8bd",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c3495cf2-0042-40e9-af91-87a1d54e6105",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "97701400-d210-44a5-8d19-ccc85e706e6d",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f054651d-74fa-41f2-8152-90a0f8fedae1",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
