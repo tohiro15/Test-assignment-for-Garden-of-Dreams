@@ -6,11 +6,9 @@ public class BuildingManager : MonoBehaviour
     public static BuildingManager Instance { get; private set; }
 
     private GameConfig _gameConfig;
-
     private List<GameObject> _buildings = new();
     private GameObject _currentBuilding;
     private GameObject _buildingPreview;
-
     private GameObject[] _buildingPrefabs;
 
     public Vector2Int GridSize => _gameConfig.GridSize;
@@ -99,7 +97,6 @@ public class BuildingManager : MonoBehaviour
         if (_buildingPreview == null) return;
 
         Vector2Int buildingSize = _currentBuilding.GetComponent<Building>().Size;
-
         Vector3 gridPosition = SnapToGrid(position, buildingSize);
         _buildingPreview.transform.position = gridPosition;
 
@@ -118,6 +115,8 @@ public class BuildingManager : MonoBehaviour
         {
             var building = Instantiate(_currentBuilding, gridPosition, Quaternion.identity);
             _buildings.Add(building);
+
+            SaveBuildings();
         }
         else
         {
@@ -138,14 +137,13 @@ public class BuildingManager : MonoBehaviour
 
     private bool IsAreaFree(Vector3 position, Vector2Int size)
     {
-        Vector3 centerPosition = position;
+        Vector3 startPosition = position - new Vector3(size.x * GridSize.x / 2f, 0, size.y * GridSize.y / 2f);
 
         for (int x = 0; x < size.x; x++)
         {
             for (int z = 0; z < size.y; z++)
             {
-                Vector3 offset = new Vector3(x * GridSize.x, 0, z * GridSize.y);
-                Vector3 checkPosition = centerPosition + offset;
+                Vector3 checkPosition = startPosition + new Vector3(x * GridSize.x, 0, z * GridSize.y);
 
                 bool isOccupied = false;
 
@@ -154,8 +152,10 @@ public class BuildingManager : MonoBehaviour
                     Vector3 buildingPosition = building.transform.position;
                     Vector2Int buildingSize = building.GetComponent<Building>().Size;
 
-                    bool isOverlappingX = Mathf.Abs(checkPosition.x - buildingPosition.x) < (buildingSize.x * GridSize.x);
-                    bool isOverlappingZ = Mathf.Abs(checkPosition.z - buildingPosition.z) < (buildingSize.y * GridSize.y);
+                    Vector3 buildingStartPosition = buildingPosition - new Vector3(buildingSize.x * GridSize.x / 2f, 0, buildingSize.y * GridSize.y / 2f);
+
+                    bool isOverlappingX = checkPosition.x >= buildingStartPosition.x && checkPosition.x < buildingStartPosition.x + buildingSize.x * GridSize.x;
+                    bool isOverlappingZ = checkPosition.z >= buildingStartPosition.z && checkPosition.z < buildingStartPosition.z + buildingSize.y * GridSize.y;
 
                     if (isOverlappingX && isOverlappingZ)
                     {
@@ -186,6 +186,8 @@ public class BuildingManager : MonoBehaviour
             {
                 _buildings.Remove(hit.collider.gameObject);
                 Destroy(hit.collider.gameObject);
+
+                SaveBuildings();
             }
         }
     }
@@ -209,5 +211,44 @@ public class BuildingManager : MonoBehaviour
             Destroy(building);
         }
         _buildings.Clear();
+    }
+
+    private void SaveBuildings()
+    {
+        BuildingsData data = GetBuildingsData();
+        _saveManager.SaveBuildings(data);
+    }
+
+    private BuildingsData GetBuildingsData()
+    {
+        BuildingsData data = new BuildingsData();
+        data.Buildings = new BuildingData[_buildings.Count];
+
+        for (int i = 0; i < _buildings.Count; i++)
+        {
+            var building = _buildings[i];
+            var buildingComponent = building.GetComponent<Building>();
+
+            data.Buildings[i] = new BuildingData
+            {
+                PrefabIndex = GetPrefabIndex(buildingComponent),
+                Position = building.transform.position
+            };
+        }
+
+        return data;
+    }
+
+    private int GetPrefabIndex(Building building)
+    {
+        for (int i = 0; i < _buildingPrefabs.Length; i++)
+        {
+            if (_buildingPrefabs[i].GetComponent<Building>().Size == building.Size)
+            {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

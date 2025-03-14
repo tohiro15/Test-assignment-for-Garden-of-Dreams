@@ -127,7 +127,7 @@ public class InputHandler : MonoBehaviour
 
     public void EnablePlacementMode()
     {
-        if (_isDeletionMode) DisableDeletionMode();  // Отключаем режим удаления, если он был активен
+        if (_isDeletionMode) DisableDeletionMode();
 
         _isBuildingSelected = true;
         _input.PlacementMode.Enable();
@@ -138,7 +138,7 @@ public class InputHandler : MonoBehaviour
 
     public void EnableDeletionMode()
     {
-        if (_isBuildingSelected) DisableBuildingMode();  // Отключаем режим строительства, если он был активен
+        if (_isBuildingSelected) DisableBuildingMode();
 
         _isBuildingSelected = false;
         _isDeletionMode = true;
